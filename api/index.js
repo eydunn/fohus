@@ -11,4 +11,4 @@ async function api() {
 	return results
 }
 
-api()
+module.exports = api
