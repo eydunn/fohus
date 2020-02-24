@@ -7,9 +7,9 @@ https://fohus.now.sh/
 
 Returns an array of objects from
 
-* Betriheim.fo
-* Skyn.fo
-* Meklarin.fo
+* [x] Betriheim.fo
+* [x] Skyn.fo
+* [x] Meklarin.fo
 
 #### Properties:
 
