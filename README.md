@@ -27,3 +27,12 @@ Returns an array of objects from
 * **price** (string)
 * **url** (string/url)
 * **provider** (string)
+
+#### TODO
+[ ] ADD: Search features in API
+[ ] ADD: More data to objects
+[ ] DO: Optimization and code cleanup
+[ ] DO: Replace legacy request-promise with node-fetch
+[ ] ADD: Examples
+
+ 
