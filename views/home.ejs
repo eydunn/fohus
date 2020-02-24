@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home Page</title>
+
+    <style type="text/css" media="screen">
+        body {
+            background-color: whitesmoke;
+            font-family: sans-serif;
+        }
+        .house{
+          display:flex;
+          flex-direction:column;
+          color:black;
+          text-decoration: none;
+          width: 300px;
+          background-size: cover;
+          margin-bottom:1rem;
+          justify-content: space-between;
+
+
+        }
+        .listings{
+          max-width:100%;
+          display:flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          flex-wrap: wrap;
+
+        }
+        .inner{
+          background:#ffffff73;
+          padding:1rem;
+          height:100%;
+          display:flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="listings">
+
+      <% listings.forEach((item)=>{%>
+      <a class="house" href="<%=item.url%>" style="background:url('<%=item.img%>')">
+        <div class="inner" >
+        <h2><%=item.address%></h2>
+        <p style="background:#00000085;padding:.5rem;color:white">
+        <b style="border-radius:.5rem; background:<% if (item.status ==="new") { %>
+        orange
+        <%} else { %>
+        none
+        <% } %>;padding:.3rem;">
+<%=item.status%></b>
+          <br/>
+          <br/>
+          <%=item.price%><br/>
+          <%=item.area%>
+        </p>
+        </div>
+      </a>
+      <%});%>
+
+    </div>
+</body>
+
+</html>
