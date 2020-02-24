@@ -4,6 +4,7 @@ const port = 3000
 
 const api = require('./api')
 app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views/'))
 
 app.get('/api', async (req, res) => res.json(await api()))
 app.get('/', async (req, res) => {
