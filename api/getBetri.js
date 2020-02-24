@@ -33,7 +33,7 @@ async function betri() {
 				url: 'https://www.betriheim.fo' + x.url,
 				img: x.imageUrl,
 				price: x.suggestedPrice,
-				status: status[x.statusLabelClass] || 'none',
+				status: (x.statusLabel && status[x.statusLabelClass]) || 'none',
 				provider: 'Betriheim'
 			}))
 		})
