@@ -30,7 +30,7 @@
 
         }
         .inner{
-          background:#ffffff73;
+          /*background:#ffffff73;*/
           padding:1rem;
           height:100%;
           display:flex;
@@ -47,7 +47,7 @@
       <% listings.forEach((item)=>{%>
       <a class="house" href="<%=item.url%>" target="_blank" style="background:url('<%=item.img%>')">
         <div class="inner" >
-        <h2><%=item.address%></h2>
+        <h2 style="text-shadow:1px 1px 1px white"><%=item.address%></h2>
         <p style="background:#00000085;padding:.5rem;color:white">
         <b style="border-radius:.5rem; background:<% if (item.status ==="new") { %>
         orange
