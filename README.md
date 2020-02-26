@@ -1,4 +1,5 @@
-# fohus
+<img src="https://raw.githubusercontent.com/digvalley/fohus/master/fohus.png" alt="logo" width="100px" style="margin:0 auto;display:block"/>
+
 
 Webscraper and data collector of realestate data in the Faroe Islands
 https://fohus.now.sh/
