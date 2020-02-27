@@ -1,6 +1,6 @@
-const getSkyn = require('./getSkyn.js')
-const getBetri = require('./getBetri.js')
-const getMeklarin = require('./getMeklarin.js')
+const getSkyn = require('./getSkyn_test.js')
+const getBetri = require('./getBetri_test.js')
+const getMeklarin = require('./getMeklarin_test.js')
 
 async function api() {
 	const resultsSkyn = await getSkyn()
@@ -8,8 +8,7 @@ async function api() {
 	const resultsMeklarin = await getMeklarin()
 
 	const results = [...resultsSkyn, ...resultsBetri, ...resultsMeklarin]
-
+	console.log(results)
 	return results
 }
-
-module.exports = api
+api()

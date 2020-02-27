@@ -1,30 +1,30 @@
 const cheerio = require('cheerio')
-var fetch = require('node-fetch')
+const fetch = require('node-fetch')
+const {
+	fetchHtmlOk,
+	handleError,
+	objectFactory,
+	statusCodes
+} = require('./utils')
 
 async function skyn() {
 	const url = 'https://www.skyn.fo/ognir-til-soelu'
 
 	return fetch(url)
-		.then(res => {
-			if (!res.ok) throw Error(res.statusText)
-
+		.then(fetchHtmlOk)
+		.then(html => {
 			const results = []
-			const $ = cheerio.load(res.text())
+			const $ = cheerio.load(html)
 
 			$('.ogn').each((i, el) => {
-				let obj = {
-					status: NULL,
-					address: NULL,
-					area: NULL,
-					img: NULL,
-					price: NULL,
-					url: NULL,
-					provider: NULL
-				}
-				obj.status = 'none'
-				if ($(el).hasClass('sold')) obj.status = 'sold'
-				if ($(el).hasClass('newprop')) obj.status = 'new'
-				if ($(el).hasClass('newbid')) obj.status = 'bid'
+				let obj = objectFactory()
+
+				const status = $(el)
+					.attr('class')
+					.split(/\s+/)
+					.filter(x => Object.keys(statusCodes).includes(x))
+
+				obj.status = statusCodes[status[0]] || null
 
 				obj.address = $(el)
 					.find('.ogn_headline')
@@ -52,12 +52,12 @@ async function skyn() {
 						.find('.ogn_thumb>a')
 						.attr('href')
 
-				obj.provider = 'Skyn'
-
+				obj.provider = 'skyn'
 				results.push(obj)
 			})
+
 			return results
 		})
-		.then(result => result)
+		.catch(handleError)
 }
 module.exports = skyn
