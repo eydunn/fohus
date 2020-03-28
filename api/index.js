@@ -1,4 +1,3 @@
-const cheerio = require('cheerio')
 const getSkyn = require('./getSkyn.js')
 const getBetri = require('./getBetri.js')
 const getMeklarin = require('./getMeklarin.js')
