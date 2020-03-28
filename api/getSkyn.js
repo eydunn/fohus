@@ -1,54 +1,103 @@
 const cheerio = require('cheerio')
-var request = require('request-promise')
+const fetch = require('node-fetch')
+const {
+  fetchHtmlOk,
+  handleError,
+  objectFactory,
+  statusCodes,
+  cleanEmptyStrings
+} = require('./utils')
 
 async function skyn() {
-	const results = []
-	const url = 'https://www.skyn.fo/ognir-til-soelu'
+  const url = 'https://www.skyn.fo/ognir-til-soelu'
 
-	return request
-		.get(url, function(err, resp, html) {
-			if (!err) {
-				const $ = cheerio.load(html)
+  return fetch(url)
+    .then(fetchHtmlOk)
+    .then(html => {
+      const results = []
+      const $ = cheerio.load(html)
 
-				$('.ogn').each((i, el) => {
-					let obj = {}
-					obj.status = 'none'
-					if ($(el).hasClass('sold')) obj.status = 'sold'
-					if ($(el).hasClass('newprop')) obj.status = 'new'
-					if ($(el).hasClass('newbid')) obj.status = 'bid'
+      $('.ogn').each((i, el) => {
+        let obj = objectFactory()
 
-					obj.address = $(el)
-						.find('.ogn_headline')
-						.text()
+        const status = $(el)
+          .attr('class')
+          .split(/\s+/)
+          .filter(x => Object.keys(statusCodes).includes(x))
 
-					obj.area = $(el)
-						.find('.ogn_adress')
-						.text()
+        obj.status = statusCodes[status[0]] || null
 
-					obj.img =
-						'https://skyn.fo' +
-						$(el)
-							.find('.ogn_thumb>a>img')
-							.attr('src')
+        obj.address = $(el)
+          .find('.ogn_headline')
+          .text()
 
-					obj.price = $(el)
-						.find('.listprice')
-						.text()
-						.split('.')
-						.join('')
+        obj.area = $(el)
+          .find('.ogn_adress')
+          .text()
 
-					obj.url =
-						'https://skyn.fo' +
-						$(el)
-							.find('.ogn_thumb>a')
-							.attr('href')
+        obj.img =
+          'https://skyn.fo' +
+          $(el)
+            .find('.ogn_thumb>a>img')
+            .attr('src')
 
-					obj.provider = 'Skyn'
+        obj.price = $(el)
+          .find('.listprice')
+          .text()
+          .split('.')
+          .join('')
+          .trim()
 
-					results.push(obj)
-				})
-			}
-		})
-		.then(_ => results)
+        obj.url =
+          'https://skyn.fo' +
+          $(el)
+            .find('.ogn_thumb>a')
+            .attr('href')
+
+        obj.externalID =
+          'skyn' +
+          $(el)
+            .find('.ogn_thumb>a')
+            .attr('href')
+            .split('PROD')[1]
+
+        obj.rooms = $(el)
+          .find('.prop-bedrooms')
+          .parent()
+          .text()
+          .trim()
+          .replace('−', '')
+
+        obj.m2House = $(el)
+          .find('.prop-size')
+          .parent()
+          .text()
+          .replace('−', '')
+          .replace('m2', '')
+          .trim()
+
+        obj.m2Property = $(el)
+          .find('.prop-ground-size')
+          .parent()
+          .text()
+          .replace('−', '')
+          .replace('m2', '')
+          .trim()
+
+        obj.bid = $(el)
+          .find('.latestoffer')
+          .text()
+          .split('.')
+          .join('')
+
+        obj.provider = 'skyn'
+
+        obj = cleanEmptyStrings(obj)
+        results.push(obj)
+      })
+
+      return results
+    })
+    .catch(handleError)
 }
 module.exports = skyn
