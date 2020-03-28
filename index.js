@@ -9,7 +9,8 @@ app.set('views', path.join(__dirname, 'views/'))
 
 app.get('/api', async (req, res) => {
   res.header('Content-Type', 'application/json')
-  res.json(await api())
+  res.send(JSON.stringify(await api(), null, 4))
+  //res.json(await api())
 })
 app.get('/', async (req, res) => {
   let listings = await api()
@@ -20,4 +21,4 @@ app.get('/', async (req, res) => {
   })
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`fohus listening on port ${port}!`))
